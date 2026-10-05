@@ -1,0 +1,55 @@
+const CACHE="jake-puberdade-v2";
+const FILES=[
+  "./",
+  "./index.html",
+  "./style.css",
+  "./game.js",
+  "./manifest.webmanifest",
+  "./assets/backgrounds/fase1.png",
+  "./assets/backgrounds/fase2.png",
+  "./assets/backgrounds/fase3.png",
+  "./assets/backgrounds/fase4.png",
+  "./assets/backgrounds/fase5.png",
+  "./assets/icon-192.png",
+  "./assets/icon-512.png",
+  "./assets/jake/hero.png",
+  "./assets/jake/jump.png",
+  "./assets/jake/walk_0.png",
+  "./assets/jake/walk_1.png",
+  "./assets/jake/walk_2.png",
+  "./assets/jake/walk_3.png",
+  "./assets/jake/walk_4.png",
+  "./assets/jake/walk_5.png",
+  "./assets/jake/walk_6.png",
+  "./assets/jake/walk_7.png",
+  "./assets/obstacles/backpack.png",
+  "./assets/obstacles/ball.png",
+  "./assets/obstacles/basket.png",
+  "./assets/obstacles/books.png",
+  "./assets/obstacles/box.png",
+  "./assets/obstacles/chair.png",
+  "./assets/obstacles/clothes.png",
+  "./assets/obstacles/dinosaur.png",
+  "./assets/obstacles/lamp.png",
+  "./assets/obstacles/shoes.png",
+  "./assets/obstacles/skateboard.png",
+  "./assets/obstacles/stool.png",
+  "./assets/rewards/chest.png",
+  "./assets/rewards/coin.png",
+  "./assets/rewards/coin_stack.png",
+  "./assets/rewards/crown_coin.png",
+  "./assets/rewards/gem.png",
+  "./assets/rewards/heart.png",
+  "./assets/rewards/medal.png",
+  "./assets/rewards/potion.png",
+  "./assets/rewards/star.png",
+  "./assets/rewards/trophy.png"
+];
+self.addEventListener("install",e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(FILES)).then(()=>self.skipWaiting())));
+self.addEventListener("activate",e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
+self.addEventListener("fetch",e=>{
+  if(e.request.method!=="GET")return;
+  e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).then(resp=>{
+    const copy=resp.clone();caches.open(CACHE).then(c=>c.put(e.request,copy));return resp;
+  }).catch(()=>caches.match("./index.html"))));
+});

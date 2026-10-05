@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+  <meta name="theme-color" content="#14213d">
+  <meta name="description" content="Jake — Missão Puberdade: jogo educativo PWA offline sobre desenvolvimento na puberdade.">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="assets/icon-192.png">
+  <link rel="apple-touch-icon" href="assets/icon-192.png">
+  <link rel="stylesheet" href="style.css">
+  <title>Jake — Missão Puberdade</title>
+</head>
+<body>
+  <div id="app">
+    <section id="startScreen" class="screen start-screen">
+      <div class="start-card">
+        <div class="hero-wrap">
+          <img src="assets/jake/hero.png" alt="Jake, personagem adolescente do jogo">
+        </div>
+        <div class="start-copy">
+          <span class="eyebrow">JOGO EDUCATIVO • FUNCIONA OFFLINE</span>
+          <h1>Jake<br><strong>Missão Puberdade</strong></h1>
+          <p>Caminhe, pule obstáculos e responda às perguntas. Para avançar, Jake precisa acertar <strong>todas</strong> as perguntas da fase.</p>
+          <div class="rule-grid">
+            <div><b>🪙 +10</b><span>por resposta correta</span></div>
+            <div><b>❤️ 3 vidas</b><span>erro ou colisão tira uma vida</span></div>
+            <div><b>↩ Reinício</b><span>ao errar, a fase volta ao começo</span></div>
+          </div>
+          <div class="start-actions">
+            <button id="startBtn" class="primary">▶ Escolher fase</button>
+            <button id="continueBtn" class="secondary" hidden>Continuar</button>
+            <button id="installBtn" class="secondary" hidden>⬇ Instalar app</button>
+          </div>
+          <p class="small">Som e música podem ser desligados. Todos os avisos sonoros também aparecem visualmente.</p>
+        </div>
+      </div>
+    </section>
+
+
+    <section id="phaseScreen" class="screen phase-screen" hidden>
+      <div class="phase-select-wrap">
+        <div class="phase-select-head">
+          <div>
+            <span class="eyebrow">ESCOLHA A FASE</span>
+            <h2>Jornada de Jake</h2>
+            <p>As fases são liberadas em sequência. Complete todas as perguntas para desbloquear a próxima.</p>
+          </div>
+          <button id="phaseBackBtn" class="secondary">← Voltar</button>
+        </div>
+        <div id="phaseCards" class="phase-cards"></div>
+      </div>
+    </section>
+
+    <section id="gameScreen" class="screen game-screen" hidden>
+      <header class="hud" aria-label="Informações do jogo">
+        <div class="brand-mini">JAKE <span>MISSÃO PUBERDADE</span></div>
+        <div class="hud-stats">
+          <div class="pill">❤️ <span id="livesText">3</span></div>
+          <div class="pill">🪙 <span id="coinsText">0</span></div>
+          <div class="pill stage-pill"><span id="stageText">Fase 1</span></div>
+          <div class="pill progress-pill">Perguntas <span id="progressText">0/5</span></div>
+        </div>
+        <div class="hud-actions">
+          <button id="soundBtn" class="icon-btn" aria-label="Ligar ou desligar som">🔊</button>
+          <button id="textBtn" class="icon-btn" aria-label="Aumentar texto">A+</button>
+          <button id="homeBtn" class="icon-btn" aria-label="Voltar ao início">⌂</button>
+        </div>
+      </header>
+
+      <main class="game-shell">
+        <div id="phaseBanner" class="phase-banner" aria-live="polite"></div>
+        <div id="visualFeedback" class="visual-feedback" aria-hidden="true"></div>
+        <canvas id="gameCanvas" width="1536" height="864" aria-label="Área do jogo"></canvas>
+        <div id="offlineBadge" class="offline-badge">OFFLINE ✓</div>
+
+        <div class="touch-controls" aria-label="Controles do jogo">
+          <button id="leftBtn" class="control-btn" aria-label="Andar para a esquerda">◀</button>
+          <button id="jumpBtn" class="control-btn jump" aria-label="Pular">▲</button>
+          <button id="rightBtn" class="control-btn" aria-label="Andar para a direita">▶</button>
+        </div>
+      </main>
+    </section>
+
+    <div id="questionModal" class="modal" hidden>
+      <div class="modal-card question-card" role="dialog" aria-modal="true" aria-labelledby="questionTitle">
+        <div class="modal-top">
+          <span id="questionTag" class="question-tag">DESAFIO</span>
+          <span id="questionCounter"></span>
+        </div>
+        <h2 id="questionTitle">Pergunta</h2>
+        <div id="answerButtons" class="answers"></div>
+        <p class="question-hint">Escolha uma alternativa para Jake continuar.</p>
+      </div>
+    </div>
+
+    <div id="infoModal" class="modal" hidden>
+      <div class="modal-card reward-card" role="dialog" aria-modal="true">
+        <img id="infoImage" src="assets/rewards/star.png" alt="">
+        <h2 id="infoTitle">Muito bem!</h2>
+        <p id="infoText"></p>
+        <button id="infoBtn" class="primary">Continuar</button>
+      </div>
+    </div>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  </div>
+  <script src="game.js"></script>
+</body>
+</html>
